@@ -82,6 +82,8 @@ public class BugzillaOnlineParser {
 	public static final String CHANGES = "changes";
 
 	public static final String HISTORY = "history";
+	
+	public static final String COMPONENT = "component";
 
 	public List<ITSDataType> parseEntries(final Object[] bugs, final Object[] histories, final Map<String, Object> comments) {
 		List<ITSDataType> entries = newArrayListWithCapacity(bugs.length);
@@ -115,6 +117,7 @@ public class BugzillaOnlineParser {
 		entry.setResolution(getResolution(details));
 		entry.setReporter(getReporter(details));
 		entry.setAssignees(getAssignee(details));
+		entry.setComponent(getComponent(details));
 
 		return entry;
 	}
@@ -169,6 +172,10 @@ public class BugzillaOnlineParser {
 
 	private HashSet<String> getAssignee(Map<String, Object> details) {
 		return newHashSet(details.get(ASSIGNEE).toString());
+	}
+	
+	private String getComponent(Map<String, Object> details) {
+		return details.get(COMPONENT).toString();
 	}
 
 	@SuppressWarnings("unchecked")

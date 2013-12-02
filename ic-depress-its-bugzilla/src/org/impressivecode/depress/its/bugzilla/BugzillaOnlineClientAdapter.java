@@ -186,7 +186,7 @@ public class BugzillaOnlineClientAdapter {
 		Map<String, Object> parameters = prepareBugsIdsParameters(ids);
 		parameters.put(INCLUDE_FIELDS, new String[] { BugzillaOnlineParser.ID, BugzillaOnlineParser.CREATED, BugzillaOnlineParser.UPDATED, BugzillaOnlineParser.STATUS, BugzillaOnlineParser.ASSIGNEE,
 				BugzillaOnlineParser.FIX_VERSION, BugzillaOnlineParser.VERSION, BugzillaOnlineParser.REPORTER, BugzillaOnlineParser.PRIORITY, BugzillaOnlineParser.SUMMARY, BugzillaOnlineParser.LINK,
-				BugzillaOnlineParser.RESOLUTION });
+				BugzillaOnlineParser.RESOLUTION, BugzillaOnlineParser.COMPONENT });
 		return parameters;
 	}
 
