@@ -43,6 +43,7 @@ public class ITSDataType {
     private List<String> comments = Collections.emptyList();
     private ITSResolution resolution;
     private String reporter;
+    private String component;
     /**
      * It is possible to have more assignees.
      */
@@ -184,8 +185,16 @@ public class ITSDataType {
     public void setCommentAuthors(final Set<String> commentAuthors) {
         this.commentAuthors = commentAuthors;
     }
+    
+    public String getComponent() {
+		return component;
+	}
 
-    @Override
+	public void setComponent(String component) {
+		this.component = component;
+	}
+
+	@Override
     public String toString() {
         return String
                 .format("ITSDataType [issueId=%s, created=%s, updated=%s, resolved=%s, status=%s, type=%s, version=%s, fixVersion=%s, priority=%s, summary=%s, link=%s, description=%s, comments=%s, resolution=%s, reporter=%s, assignees=%s, commentAuthors=%s]",
