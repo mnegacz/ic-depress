@@ -32,6 +32,8 @@ public class GitCommitFile {
     private String path;
     private String javaClass;
     private SCMOperation operation;
+    private Long locAdded;
+    private Long locDeleted;
 
     public String getPath() {
         return path;
@@ -79,4 +81,21 @@ public class GitCommitFile {
     public String getJavaClass(){
         return this.javaClass;
     }
+
+	public Long getLocAdded() {
+		return locAdded;
+	}
+
+	public void setLocAdded(Long locAdded) {
+		this.locAdded = locAdded;
+	}
+
+	public Long getLocDeleted() {
+		return locDeleted;
+	}
+
+	public void setLocDeleted(Long locDeleted) {
+		this.locDeleted = locDeleted;
+	}
+    
 }
