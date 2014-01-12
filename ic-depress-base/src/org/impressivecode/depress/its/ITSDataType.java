@@ -44,6 +44,8 @@ public class ITSDataType {
     private ITSResolution resolution;
     private String reporter;
     private String component;
+    private Boolean reopened = false;
+    private Date firstClose;
     /**
      * It is possible to have more assignees.
      */
@@ -192,6 +194,22 @@ public class ITSDataType {
 
 	public void setComponent(String component) {
 		this.component = component;
+	}
+
+	public Boolean getReopened() {
+		return reopened;
+	}
+
+	public void setReopened(Boolean reopened) {
+		this.reopened = reopened;
+	}
+
+	public Date getFirstClose() {
+		return firstClose;
+	}
+
+	public void setFirstClose(Date firstClose) {
+		this.firstClose = firstClose;
 	}
 
 	@Override

@@ -210,6 +210,8 @@ public class BugzillaOnlineParser {
 				Map<String, Object> changeDetails = (Map<String, Object>) change;
 
 				tryToSetResolved(entry, eventDetails, changeDetails);
+				tryToSetReopened(entry, eventDetails, changeDetails);
+				tryToSetFirstClose(entry, eventDetails, changeDetails);
 			}
 		}
 	}
@@ -217,6 +219,18 @@ public class BugzillaOnlineParser {
 	private void tryToSetResolved(ITSDataType entry, Map<String, Object> eventDetails, Map<String, Object> changeDetails) {
 		if (isEntryResolved(entry) && isFieldStatus(changeDetails) && isValueAdded(changeDetails) && isValueChangeToResolved(changeDetails) && isAfterPreviouslyResolvedDate(entry, eventDetails)) {
 			entry.setResolved((Date) eventDetails.get(WHEN));
+		}
+	}
+	
+	private void tryToSetReopened(ITSDataType entry, Map<String, Object> eventDetails, Map<String, Object> changeDetails) {
+		if (!entry.getReopened() && isFieldStatus(changeDetails) && isValueAdded(changeDetails) && isValueChangeToReopened(changeDetails)) {
+			entry.setReopened(true);			
+		}
+	}
+
+	private void tryToSetFirstClose(ITSDataType entry, Map<String, Object> eventDetails, Map<String, Object> changeDetails) {
+		if (isFieldStatus(changeDetails) && isValueAdded(changeDetails) && isValueChangeToClosed(changeDetails) && isBeforePreviouslyClosedDate(entry, eventDetails)) {
+			entry.setFirstClose((Date) eventDetails.get(WHEN));
 		}
 	}
 
@@ -236,8 +250,20 @@ public class BugzillaOnlineParser {
 		return ITSStatus.RESOLVED.equals(BugzillaCommonUtils.getStatus(changeDetails.get(ADDED).toString()));
 	}
 
+	private boolean isValueChangeToClosed(Map<String, Object> changeDetails) {
+		return ITSStatus.CLOSED.equals(BugzillaCommonUtils.getStatus(changeDetails.get(ADDED).toString())) || ITSStatus.RESOLVED.equals(BugzillaCommonUtils.getStatus(changeDetails.get(ADDED).toString()));
+	}
+	
+	private boolean isValueChangeToReopened(Map<String, Object> changeDetails) {
+		return ITSStatus.REOPEN.equals(BugzillaCommonUtils.getStatus(changeDetails.get(ADDED).toString()));
+	}
+	
 	private boolean isAfterPreviouslyResolvedDate(ITSDataType entry, Map<String, Object> changeDetails) {
 		return entry.getResolved() == null || ((Date) changeDetails.get(WHEN)).after(entry.getResolved());
+	}
+	
+	private boolean isBeforePreviouslyClosedDate(ITSDataType entry, Map<String, Object> changeDetails) {
+		return entry.getFirstClose() == null || ((Date) changeDetails.get(WHEN)).before(entry.getFirstClose());
 	}
 
 	@SuppressWarnings("unchecked")

@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package org.impressivecode.depress.its;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static org.impressivecode.depress.common.Cells.booleanCell;
 import static org.impressivecode.depress.common.Cells.dateTimeCell;
 import static org.impressivecode.depress.common.Cells.dateTimeOrMissingCell;
 import static org.impressivecode.depress.common.Cells.stringCell;
@@ -33,6 +34,7 @@ import org.knime.core.data.DataTableSpec;
 import org.knime.core.data.collection.ListCell;
 import org.knime.core.data.collection.SetCell;
 import org.knime.core.data.date.DateAndTimeCell;
+import org.knime.core.data.def.BooleanCell;
 import org.knime.core.data.def.DefaultRow;
 import org.knime.core.data.def.StringCell;
 
@@ -44,7 +46,9 @@ import org.knime.core.data.def.StringCell;
  */
 public class ITSAdapterTableFactory {
 
-    public static final String ISSUE_ID = "ID";
+    private static final String REOPENED = "Reopened";
+	private static final String FIRST_CLOSE = "FirstClose";
+	public static final String ISSUE_ID = "ID";
     public static final String CREATION_DATE = "Created";
     public static final String RESOLVED_DATE = "Resolved";
     public static final String UPDATED_DATE = "Updated";
@@ -93,7 +97,9 @@ public class ITSAdapterTableFactory {
                 new DataColumnSpecCreator(LINK, StringCell.TYPE).createSpec(),
                 new DataColumnSpecCreator(DESCRIPTION, StringCell.TYPE).createSpec(),
                 new DataColumnSpecCreator(COMMENTS, ListCell.getCollectionType(StringCell.TYPE)).createSpec(),
-                new DataColumnSpecCreator(COMPONENT, StringCell.TYPE).createSpec()};
+                new DataColumnSpecCreator(COMPONENT, StringCell.TYPE).createSpec(),
+                new DataColumnSpecCreator(REOPENED, BooleanCell.TYPE).createSpec(),
+                new DataColumnSpecCreator(FIRST_CLOSE, DateAndTimeCell.TYPE).createSpec()};
         DataTableSpec outputSpec = new DataTableSpec(allColSpecs);
         return outputSpec;
     }
@@ -119,6 +125,8 @@ public class ITSAdapterTableFactory {
                 stringOrMissingCell(itsData.getDescription()),
                 stringListOrMissingCell(itsData.getComments()),
                 stringOrMissingCell(itsData.getComponent()),
+                booleanCell(itsData.getReopened()),
+                dateTimeOrMissingCell(itsData.getFirstClose()),
         };
         DataRow row = new DefaultRow(itsData.getIssueId(), cells);
         return row;
