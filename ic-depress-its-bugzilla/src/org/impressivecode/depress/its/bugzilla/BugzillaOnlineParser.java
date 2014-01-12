@@ -85,6 +85,8 @@ public class BugzillaOnlineParser {
 	
 	public static final String COMPONENT = "component";
 
+	private static final String AUTHOR = "author";
+
 	public List<ITSDataType> parseEntries(final Object[] bugs, final Object[] histories, final Map<String, Object> comments) {
 		List<ITSDataType> entries = newArrayListWithCapacity(bugs.length);
 
@@ -143,15 +145,23 @@ public class BugzillaOnlineParser {
 	}
 
 	private ArrayList<String> getFixVersion(Map<String, Object> details) {
-		return newArrayList(details.get(FIX_VERSION).toString());
+		ArrayList<String> fixVersions = newArrayList();
+		if (details.containsKey(FIX_VERSION)) {
+			fixVersions.add(details.get(FIX_VERSION).toString());
+		}
+		return fixVersions;
 	}
 
 	private ArrayList<String> getVersion(Map<String, Object> details) {
-		return newArrayList(details.get(VERSION).toString());
+		ArrayList<String> versions = newArrayList();
+		if (details.containsKey(VERSION)) {
+			versions.add(details.get(VERSION).toString());
+		}
+		return versions;
 	}
 
 	private ITSPriority getPriority(Map<String, Object> details) {
-		return BugzillaCommonUtils.getPriority(details.get(PRIORITY).toString());
+		return details.containsKey(PRIORITY) ? BugzillaCommonUtils.getPriority(details.get(PRIORITY).toString()) : null;
 	}
 
 	private String getSummary(Map<String, Object> details) {
@@ -159,7 +169,7 @@ public class BugzillaOnlineParser {
 	}
 
 	private String getLink(Map<String, Object> details) {
-		return details.get(LINK).toString();
+		return details.containsKey(LINK) ? details.get(LINK).toString() : null;
 	}
 
 	private ITSResolution getResolution(Map<String, Object> details) {
@@ -167,7 +177,7 @@ public class BugzillaOnlineParser {
 	}
 
 	private String getReporter(Map<String, Object> details) {
-		return details.get(REPORTER).toString();
+		return details.containsKey(REPORTER) ? details.get(REPORTER).toString() : null;
 	}
 
 	private HashSet<String> getAssignee(Map<String, Object> details) {
@@ -252,7 +262,7 @@ public class BugzillaOnlineParser {
 	}
 
 	private String getCommentAuthor(Map<String, Object> map) {
-		return map.get(REPORTER).toString();
+		return map.get(AUTHOR).toString();
 	}
 
 	private String getComment(Map<String, Object> map) {
